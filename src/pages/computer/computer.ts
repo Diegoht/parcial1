@@ -1,33 +1,43 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { HttpClient } from '../../../node_modules/@angular/common/http';
 import { DetallesPage } from '../detalles/detalles';
 import { FavoritosPage } from '../favoritos/favoritos';
 import { BuscarPage } from '../buscar/buscar';
 
+
+@IonicPage()
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+  selector: 'page-computer',
+  templateUrl: 'computer.html',
 })
-export class HomePage {
+export class ComputerPage {
 
   PaginaDetalles=DetallesPage;
   PaginaFavoritos=FavoritosPage;
   PaginaBuscar=BuscarPage;
 
-  empleos=[];
+  compu=[];
+  imgs=[];
 
   constructor(public navCtrl: NavController, public http: HttpClient) {
-    this.http.get('/v1/klfst?&category=6020&lim=29&lang=es')
+    this.http.get('/v2/klfst?&category=5020&offset=1&lim=29&lang=es')
     .subscribe(data=>{
-      //console.log(JSON.stringify(data));
+      console.log(JSON.stringify(data));
       if(data.hasOwnProperty('list_ads')){
-        this.empleos=data['list_ads'];
+        this.compu=data['list_ads'];
+      }
+      if(data.hasOwnProperty('images')){
+        this.imgs=data['images']
       }
     },
   error=>{
     console.log(JSON.stringify(error))
   });
+  }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ComputerPage');
   }
 
   verDetalles(e){
@@ -39,7 +49,6 @@ export class HomePage {
   }
 
   verBuscar(){
-      this.navCtrl.push(this.PaginaBuscar, {search:this.empleos});
-  }
-
+    this.navCtrl.push(this.PaginaBuscar, {search:this.compu});
+}
 }

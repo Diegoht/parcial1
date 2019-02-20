@@ -1,28 +1,29 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { HttpClient } from '../../../node_modules/@angular/common/http';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { DetallesPage } from '../detalles/detalles';
 import { FavoritosPage } from '../favoritos/favoritos';
+import { HttpClient } from '../../../node_modules/@angular/common/http';
 import { BuscarPage } from '../buscar/buscar';
 
-@Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
-})
-export class HomePage {
 
+@IonicPage()
+@Component({
+  selector: 'page-mascota',
+  templateUrl: 'mascota.html',
+})
+export class MascotaPage { 
   PaginaDetalles=DetallesPage;
   PaginaFavoritos=FavoritosPage;
-  PaginaBuscar=BuscarPage;
+  PaginaBuscar=BuscarPage
 
-  empleos=[];
+  pet=[];
 
   constructor(public navCtrl: NavController, public http: HttpClient) {
-    this.http.get('/v1/klfst?&category=6020&lim=29&lang=es')
+    this.http.get('/v3/klfst?&category=4020&offset=1&lim=29&lang=es')
     .subscribe(data=>{
       //console.log(JSON.stringify(data));
       if(data.hasOwnProperty('list_ads')){
-        this.empleos=data['list_ads'];
+        this.pet=data['list_ads'];
       }
     },
   error=>{
@@ -39,7 +40,7 @@ export class HomePage {
   }
 
   verBuscar(){
-      this.navCtrl.push(this.PaginaBuscar, {search:this.empleos});
-  }
+    this.navCtrl.push(this.PaginaBuscar, {search:this.pet});
+}
 
 }
